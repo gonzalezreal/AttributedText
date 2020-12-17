@@ -28,11 +28,9 @@ func makeAttributedString() -> NSAttributedString {
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            AttributedText(makeAttributedString())
-                .background(Color.gray.opacity(0.5))
-        }
-        .accentColor(.purple)
+        AttributedText(makeAttributedString())
+            .background(Color.gray.opacity(0.5))
+            .accentColor(.purple)
     }
 }
 
