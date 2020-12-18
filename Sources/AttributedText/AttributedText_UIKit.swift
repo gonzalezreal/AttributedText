@@ -99,7 +99,6 @@
             textView.isScrollEnabled = false
             textView.backgroundColor = .clear
             textView.textContainer.lineFragmentPadding = 0
-            textView.adjustsFontForContentSizeCategory = true
             textView.delegate = self
         }
     }
