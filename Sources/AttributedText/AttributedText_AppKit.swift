@@ -77,7 +77,9 @@
 
         override func layout() {
             super.layout()
+
             textView.frame = bounds
+            textView.attributedString().updateImageTextAttachments(maxWidth: bounds.width)
         }
 
         override func invalidateIntrinsicContentSize() {
