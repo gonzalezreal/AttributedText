@@ -18,7 +18,10 @@
             uiView.openURL = context.environment.openURL
 
             DispatchQueue.main.async {
-                height = uiView.intrinsicContentSize.height
+                // Update the height within the current transaction
+                $height
+                    .transaction(context.transaction)
+                    .wrappedValue = uiView.intrinsicContentSize.height
             }
         }
     }

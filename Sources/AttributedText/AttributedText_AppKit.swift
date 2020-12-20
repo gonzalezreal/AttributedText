@@ -18,7 +18,10 @@
             nsView.openURL = context.environment.openURL
 
             DispatchQueue.main.async {
-                height = nsView.intrinsicContentSize.height
+                // Update the height within the current transaction
+                $height
+                    .transaction(context.transaction)
+                    .wrappedValue = nsView.intrinsicContentSize.height
             }
         }
     }
