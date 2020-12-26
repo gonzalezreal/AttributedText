@@ -15,6 +15,8 @@
         func updateNSView(_ nsView: AttributedTextView, context: Context) {
             nsView.attributedText = attributedText
             nsView.preferredMaxLayoutWidth = preferredMaxLayoutWidth
+            nsView.numberOfLines = context.environment.lineLimit ?? 0
+            nsView.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
             nsView.openURL = context.environment.openURL
 
             DispatchQueue.main.async {
@@ -43,6 +45,22 @@
             get { textView.attributedString() }
             set {
                 textView.textStorage?.setAttributedString(newValue)
+                invalidateIntrinsicContentSize()
+            }
+        }
+
+        var numberOfLines: Int {
+            get { textView.textContainer?.maximumNumberOfLines ?? 0 }
+            set {
+                textView.textContainer?.maximumNumberOfLines = newValue
+                invalidateIntrinsicContentSize()
+            }
+        }
+
+        var lineBreakMode: NSLineBreakMode {
+            get { textView.textContainer?.lineBreakMode ?? .byWordWrapping }
+            set {
+                textView.textContainer?.lineBreakMode = newValue
                 invalidateIntrinsicContentSize()
             }
         }

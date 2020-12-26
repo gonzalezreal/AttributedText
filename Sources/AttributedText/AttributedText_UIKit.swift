@@ -15,6 +15,8 @@
         func updateUIView(_ uiView: AttributedTextView, context: Context) {
             uiView.attributedText = attributedText
             uiView.preferredMaxLayoutWidth = preferredMaxLayoutWidth
+            uiView.numberOfLines = context.environment.lineLimit ?? 0
+            uiView.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
             uiView.openURL = context.environment.openURL
 
             DispatchQueue.main.async {
@@ -39,6 +41,22 @@
             get { textView.attributedText }
             set {
                 textView.attributedText = newValue
+                invalidateIntrinsicContentSize()
+            }
+        }
+
+        var numberOfLines: Int {
+            get { textView.textContainer.maximumNumberOfLines }
+            set {
+                textView.textContainer.maximumNumberOfLines = newValue
+                invalidateIntrinsicContentSize()
+            }
+        }
+
+        var lineBreakMode: NSLineBreakMode {
+            get { textView.textContainer.lineBreakMode }
+            set {
+                textView.textContainer.lineBreakMode = newValue
                 invalidateIntrinsicContentSize()
             }
         }
