@@ -3,32 +3,6 @@
     import SwiftUI
 
     @available(macOS 11.0, *)
-    struct AttributedTextViewWrapper: NSViewRepresentable {
-        let attributedText: NSAttributedString
-        let preferredMaxLayoutWidth: CGFloat
-        @Binding var height: CGFloat?
-
-        func makeNSView(context _: Context) -> AttributedTextView {
-            AttributedTextView()
-        }
-
-        func updateNSView(_ nsView: AttributedTextView, context: Context) {
-            nsView.attributedText = attributedText
-            nsView.preferredMaxLayoutWidth = preferredMaxLayoutWidth
-            nsView.numberOfLines = context.environment.lineLimit ?? 0
-            nsView.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
-            nsView.openURL = context.environment.openURL
-
-            DispatchQueue.main.async {
-                // Update the height within the current transaction
-                $height
-                    .transaction(context.transaction)
-                    .wrappedValue = nsView.intrinsicContentSize.height
-            }
-        }
-    }
-
-    @available(macOS 11.0, *)
     class AttributedTextView: NSView, NSTextViewDelegate {
         var preferredMaxLayoutWidth: CGFloat = 0 {
             didSet {
@@ -98,9 +72,7 @@
 
         override func layout() {
             super.layout()
-
             textView.frame = bounds
-            textView.attributedString().updateImageTextAttachments(maxWidth: bounds.width)
         }
 
         override func invalidateIntrinsicContentSize() {

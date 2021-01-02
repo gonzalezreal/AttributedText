@@ -1,32 +1,6 @@
-#if canImport(SwiftUI) && canImport(UIKit) && !os(watchOS)
+#if canImport(UIKit) && !os(watchOS)
 
     import SwiftUI
-
-    @available(iOS 14.0, tvOS 14.0, *)
-    struct AttributedTextViewWrapper: UIViewRepresentable {
-        let attributedText: NSAttributedString
-        let preferredMaxLayoutWidth: CGFloat
-        @Binding var height: CGFloat?
-
-        func makeUIView(context _: Context) -> AttributedTextView {
-            AttributedTextView()
-        }
-
-        func updateUIView(_ uiView: AttributedTextView, context: Context) {
-            uiView.attributedText = attributedText
-            uiView.preferredMaxLayoutWidth = preferredMaxLayoutWidth
-            uiView.numberOfLines = context.environment.lineLimit ?? 0
-            uiView.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
-            uiView.openURL = context.environment.openURL
-
-            DispatchQueue.main.async {
-                // Update the height within the current transaction
-                $height
-                    .transaction(context.transaction)
-                    .wrappedValue = uiView.intrinsicContentSize.height
-            }
-        }
-    }
 
     @available(iOS 14.0, tvOS 14.0, *)
     class AttributedTextView: UIView, UITextViewDelegate {
@@ -90,9 +64,7 @@
 
         override func layoutSubviews() {
             super.layoutSubviews()
-
             textView.frame = bounds
-            textView.attributedText.updateImageTextAttachments(maxWidth: bounds.width)
         }
 
         override func invalidateIntrinsicContentSize() {

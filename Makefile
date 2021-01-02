@@ -1,18 +1,18 @@
 DESTINATION_MAC = platform=macOS
-DESTINATION_IOS = generic/platform=ios
-DESTINATION_TVOS = generic/platform=tvos
+DESTINATION_IOS = platform=iOS Simulator,name=iPhone 8
+DESTINATION_TVOS = platform=tvOS Simulator,name=Apple TV
 DESTINATION_WATCHOS = generic/platform=watchOS
 
-default: build
+default: test
 
-build:
+test:
 	xcodebuild \
 			-scheme AttributedText \
 			-destination '$(DESTINATION_MAC)'
-	xcodebuild \
+	xcodebuild test \
 			-scheme AttributedText \
 			-destination '$(DESTINATION_IOS)'
-	xcodebuild \
+	xcodebuild test \
 			-scheme AttributedText \
 			-destination '$(DESTINATION_TVOS)'
 	xcodebuild \

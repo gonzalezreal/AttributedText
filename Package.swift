@@ -16,7 +16,13 @@ let package = Package(
             targets: ["AttributedText"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(
+            name: "SnapshotTesting",
+            url: "https://github.com/pointfreeco/swift-snapshot-testing",
+            from: "1.8.2"
+        ),
+    ],
     targets: [
         .target(
             name: "AttributedText",
@@ -24,7 +30,8 @@ let package = Package(
         ),
         .testTarget(
             name: "AttributedTextTests",
-            dependencies: ["AttributedText"]
+            dependencies: ["AttributedText", "SnapshotTesting"],
+            exclude: ["__Snapshots__"]
         ),
     ]
 )
