@@ -1,10 +1,10 @@
-#if canImport(SwiftUI) && !os(watchOS)
+#if canImport(SwiftUI) && !os(watchOS) && !targetEnvironment(macCatalyst)
 
     import SwiftUI
 
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
     public struct AttributedText: View {
-        @StateObject private var store = AttributedTextStore()
+        @StateObject private var store = TextViewStore()
 
         private let attributedText: NSAttributedString
 
@@ -14,13 +14,17 @@
 
         public var body: some View {
             GeometryReader { proxy in
-                AttributedTextViewWrapper(attributedText: attributedText, store: store)
+                TextViewWrapper(attributedText: attributedText, store: store)
                     .preference(key: ContainerSizePreference.self, value: proxy.size)
             }
             .onPreferenceChange(ContainerSizePreference.self) { value in
                 store.onContainerSizeChange(value)
             }
-            .frame(height: store.height)
+            .frame(
+                idealWidth: store.intrinsicContentSize?.width,
+                idealHeight: store.intrinsicContentSize?.height
+            )
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -29,7 +33,7 @@
         static var defaultValue: CGSize?
 
         static func reduce(value: inout CGSize?, nextValue: () -> CGSize?) {
-            value = value ?? nextValue()
+            value = nextValue()
         }
     }
 
