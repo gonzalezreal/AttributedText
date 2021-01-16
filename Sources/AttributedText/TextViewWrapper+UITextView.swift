@@ -1,8 +1,8 @@
-#if canImport(UIKit) && !os(watchOS) && !targetEnvironment(macCatalyst)
+#if canImport(UIKit) && !os(watchOS)
 
     import SwiftUI
 
-    @available(iOS 14.0, tvOS 14.0, *)
+    @available(iOS 14.0, tvOS 14.0, macCatalyst 14.0, *)
     struct TextViewWrapper: UIViewRepresentable {
         final class View: UITextView {
             weak var store: TextViewStore?
