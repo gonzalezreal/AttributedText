@@ -13,9 +13,9 @@
         }
 
         public var body: some View {
-            GeometryReader { proxy in
+            GeometryReader { geometry in
                 TextViewWrapper(attributedText: attributedText, store: store)
-                    .preference(key: ContainerSizePreference.self, value: proxy.size)
+                    .preference(key: ContainerSizePreference.self, value: geometry.maxSize)
             }
             .onPreferenceChange(ContainerSizePreference.self) { value in
                 store.onContainerSizeChange(value)
@@ -25,6 +25,16 @@
                 idealHeight: store.intrinsicContentSize?.height
             )
             .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
+    private extension GeometryProxy {
+        var maxSize: CGSize {
+            CGSize(
+                width: size.width - safeAreaInsets.leading - safeAreaInsets.trailing,
+                height: size.height - safeAreaInsets.top - safeAreaInsets.bottom
+            )
         }
     }
 
