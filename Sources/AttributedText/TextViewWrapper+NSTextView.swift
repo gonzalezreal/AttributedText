@@ -5,9 +5,7 @@
     @available(macOS 11.0, *)
     struct TextViewWrapper: NSViewRepresentable {
         final class View: NSTextView {
-            weak var store: TextViewStore?
-
-            var maxWidth: CGFloat {
+            var maxLayoutWidth: CGFloat {
                 get { textContainer?.containerSize.width ?? 0 }
                 set {
                     guard textContainer?.containerSize.width != newValue else { return }
@@ -17,7 +15,7 @@
             }
 
             override var intrinsicContentSize: NSSize {
-                guard maxWidth > 0,
+                guard maxLayoutWidth > 0,
                       let textContainer = self.textContainer,
                       let layoutManager = self.layoutManager
                 else {
@@ -26,19 +24,6 @@
 
                 layoutManager.ensureLayout(for: textContainer)
                 return layoutManager.usedRect(for: textContainer).size
-            }
-
-            override func invalidateIntrinsicContentSize() {
-                super.invalidateIntrinsicContentSize()
-                store?.didInvalidateIntrinsicContentSize()
-            }
-
-            func setAttributedText(_ attributedText: NSAttributedString) {
-                // Avoid notifiying the store while the text storage is processing edits
-                let store = self.store
-                self.store = nil
-                textStorage?.setAttributedString(attributedText)
-                self.store = store
             }
         }
 
@@ -56,7 +41,8 @@
         }
 
         let attributedText: NSAttributedString
-        let store: TextViewStore
+        let maxLayoutWidth: CGFloat
+        let textViewStore: TextViewStore
 
         func makeNSView(context: Context) -> View {
             let nsView = View(frame: .zero)
@@ -70,19 +56,19 @@
             nsView.textContainer?.widthTracksTextView = false
             nsView.delegate = context.coordinator
 
-            nsView.store = store
-            store.view = nsView
-
             return nsView
         }
 
         func updateNSView(_ nsView: View, context: Context) {
-            nsView.setAttributedText(attributedText)
+            nsView.textStorage?.setAttributedString(attributedText)
+            nsView.maxLayoutWidth = maxLayoutWidth
+
             nsView.textContainer?.maximumNumberOfLines = context.environment.lineLimit ?? 0
             nsView.textContainer?.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
-            nsView.invalidateIntrinsicContentSize()
 
             context.coordinator.openURL = context.environment.openURL
+
+            textViewStore.didUpdateTextView(nsView)
         }
 
         func makeCoordinator() -> Coordinator {

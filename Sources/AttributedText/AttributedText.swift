@@ -4,7 +4,7 @@
 
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
     public struct AttributedText: View {
-        @StateObject private var store = TextViewStore()
+        @StateObject private var textViewStore = TextViewStore()
 
         private let attributedText: NSAttributedString
 
@@ -14,15 +14,15 @@
 
         public var body: some View {
             GeometryReader { geometry in
-                TextViewWrapper(attributedText: attributedText, store: store)
-                    .preference(key: ContainerSizePreference.self, value: geometry.maxSize)
-            }
-            .onPreferenceChange(ContainerSizePreference.self) { value in
-                store.onContainerSizeChange(value)
+                TextViewWrapper(
+                    attributedText: attributedText,
+                    maxLayoutWidth: geometry.maxWidth,
+                    textViewStore: textViewStore
+                )
             }
             .frame(
-                idealWidth: store.intrinsicContentSize?.width,
-                idealHeight: store.intrinsicContentSize?.height
+                idealWidth: textViewStore.intrinsicContentSize?.width,
+                idealHeight: textViewStore.intrinsicContentSize?.height
             )
             .fixedSize(horizontal: false, vertical: true)
         }
@@ -30,20 +30,8 @@
 
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
     private extension GeometryProxy {
-        var maxSize: CGSize {
-            CGSize(
-                width: size.width - safeAreaInsets.leading - safeAreaInsets.trailing,
-                height: size.height - safeAreaInsets.top - safeAreaInsets.bottom
-            )
-        }
-    }
-
-    @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
-    private struct ContainerSizePreference: PreferenceKey {
-        static var defaultValue: CGSize?
-
-        static func reduce(value: inout CGSize?, nextValue: () -> CGSize?) {
-            value = nextValue()
+        var maxWidth: CGFloat {
+            size.width - safeAreaInsets.leading - safeAreaInsets.trailing
         }
     }
 

@@ -5,36 +5,21 @@
     @available(iOS 14.0, tvOS 14.0, macCatalyst 14.0, *)
     struct TextViewWrapper: UIViewRepresentable {
         final class View: UITextView {
-            weak var store: TextViewStore?
-
-            var maxWidth: CGFloat = 0 {
+            var maxLayoutWidth: CGFloat = 0 {
                 didSet {
-                    guard maxWidth != oldValue else { return }
+                    guard maxLayoutWidth != oldValue else { return }
                     invalidateIntrinsicContentSize()
                 }
             }
 
             override var intrinsicContentSize: CGSize {
-                guard maxWidth > 0 else {
+                guard maxLayoutWidth > 0 else {
                     return super.intrinsicContentSize
                 }
 
                 return sizeThatFits(
-                    CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+                    CGSize(width: maxLayoutWidth, height: .greatestFiniteMagnitude)
                 )
-            }
-
-            override func invalidateIntrinsicContentSize() {
-                super.invalidateIntrinsicContentSize()
-                store?.didInvalidateIntrinsicContentSize()
-            }
-
-            func setAttributedText(_ attributedText: NSAttributedString) {
-                // Avoid notifiying the store while the text storage is processing edits
-                let store = self.store
-                self.store = nil
-                self.attributedText = attributedText
-                self.store = store
             }
         }
 
@@ -48,7 +33,8 @@
         }
 
         let attributedText: NSAttributedString
-        let store: TextViewStore
+        let maxLayoutWidth: CGFloat
+        let textViewStore: TextViewStore
 
         func makeUIView(context: Context) -> View {
             let uiView = View()
@@ -62,19 +48,19 @@
             uiView.textContainer.lineFragmentPadding = 0
             uiView.delegate = context.coordinator
 
-            uiView.store = store
-            store.view = uiView
-
             return uiView
         }
 
         func updateUIView(_ uiView: View, context: Context) {
-            uiView.setAttributedText(attributedText)
+            uiView.attributedText = attributedText
+            uiView.maxLayoutWidth = maxLayoutWidth
+
             uiView.textContainer.maximumNumberOfLines = context.environment.lineLimit ?? 0
             uiView.textContainer.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
-            uiView.invalidateIntrinsicContentSize()
 
             context.coordinator.openURL = context.environment.openURL
+
+            textViewStore.didUpdateTextView(uiView)
         }
 
         func makeCoordinator() -> Coordinator {
