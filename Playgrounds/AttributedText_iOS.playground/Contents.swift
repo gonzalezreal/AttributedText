@@ -27,9 +27,16 @@ struct ContentView: View {
     }()
 
     var body: some View {
-        AttributedText(attributedString)
-            .background(Color.gray.opacity(0.5))
-            .accentColor(.purple)
+        Group {
+            AttributedText(attributedString)
+            AttributedText(attributedString) { url, interaction in
+                print("Interacted with \(url)")
+                // Allow performing default action
+                return true
+            }
+        }
+        .background(Color.gray.opacity(0.5))
+        .accentColor(.purple)
     }
 }
 
