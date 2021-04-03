@@ -27,9 +27,16 @@ struct ContentView: View {
     }()
 
     var body: some View {
-        AttributedText(attributedString)
-            .background(Color.gray.opacity(0.5))
-            .accentColor(.purple)
+        Group {
+            AttributedText(attributedString)
+            AttributedText(attributedString) { link in
+                print("Clicked \(link)")
+                // Do not mark click as handled -> perform default action
+                return false
+            }
+        }
+        .background(Color.gray.opacity(0.5))
+        .accentColor(.purple)
     }
 }
 

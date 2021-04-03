@@ -29,12 +29,16 @@
 
         final class Coordinator: NSObject, NSTextViewDelegate {
             var openURL: OpenURLAction?
+            var customOpenURL: AttributedText.OpenURLAction?
 
             func textView(_: NSTextView, clickedOnLink link: Any, at _: Int) -> Bool {
                 guard let url = (link as? URL) ?? (link as? String).flatMap(URL.init(string:)) else {
                     return false
                 }
 
+                if let customOpenURL = customOpenURL {
+                    return customOpenURL(url)
+                }
                 openURL?(url)
                 return false
             }
@@ -43,6 +47,7 @@
         let attributedText: NSAttributedString
         let maxLayoutWidth: CGFloat
         let textViewStore: TextViewStore
+        let openURL: AttributedText.OpenURLAction?
 
         func makeNSView(context: Context) -> View {
             let nsView = View(frame: .zero)
@@ -67,6 +72,7 @@
             nsView.textContainer?.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
 
             context.coordinator.openURL = context.environment.openURL
+            context.coordinator.customOpenURL = openURL
 
             textViewStore.didUpdateTextView(nsView)
         }
