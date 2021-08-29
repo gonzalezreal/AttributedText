@@ -6,9 +6,9 @@ import PackageDescription
 let package = Package(
     name: "AttributedText",
     platforms: [
-        .macOS(.v10_12),
-        .iOS(.v11),
-        .tvOS(.v11),
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .tvOS(.v13),
     ],
     products: [
         .library(
@@ -20,7 +20,7 @@ let package = Package(
         .package(
             name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.8.2"
+            from: "1.9.0"
         ),
     ],
     targets: [

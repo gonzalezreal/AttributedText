@@ -1,5 +1,4 @@
-#if canImport(SwiftUI) && !os(watchOS)
-
+#if !os(watchOS)
     import SwiftUI
 
     extension NSLineBreakMode {
@@ -17,5 +16,4 @@
             }
         }
     }
-
 #endif
