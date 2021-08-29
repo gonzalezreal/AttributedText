@@ -1,5 +1,4 @@
-#if canImport(SwiftUI) && !os(watchOS)
-
+#if !os(watchOS)
     import SwiftUI
 
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
@@ -10,5 +9,4 @@
             intrinsicContentSize = textView.intrinsicContentSize
         }
     }
-
 #endif

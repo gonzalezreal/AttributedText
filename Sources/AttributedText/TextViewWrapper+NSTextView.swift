@@ -1,5 +1,4 @@
-#if canImport(SwiftUI) && os(macOS)
-
+#if os(macOS)
     import SwiftUI
 
     @available(macOS 11.0, *)
@@ -75,5 +74,4 @@
             Coordinator()
         }
     }
-
 #endif

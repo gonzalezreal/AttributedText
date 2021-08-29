@@ -1,5 +1,4 @@
-#if canImport(SwiftUI) && !os(macOS) && !targetEnvironment(macCatalyst)
-
+#if !os(macOS) && !targetEnvironment(macCatalyst)
     import SnapshotTesting
     import SwiftUI
     import XCTest
@@ -55,5 +54,4 @@
         result.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body)], range: NSRange(location: 33, length: 192))
         return result
     }
-
 #endif

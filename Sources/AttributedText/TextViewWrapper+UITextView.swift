@@ -1,5 +1,4 @@
 #if canImport(UIKit) && !os(watchOS)
-
     import SwiftUI
 
     @available(iOS 14.0, tvOS 14.0, macCatalyst 14.0, *)
@@ -59,7 +58,6 @@
             uiView.textContainer.lineBreakMode = NSLineBreakMode(truncationMode: context.environment.truncationMode)
 
             context.coordinator.openURL = context.environment.openURL
-
             textViewStore.didUpdateTextView(uiView)
         }
 
@@ -67,5 +65,4 @@
             Coordinator()
         }
     }
-
 #endif
