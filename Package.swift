@@ -4,34 +4,34 @@
 import PackageDescription
 
 let package = Package(
-    name: "AttributedText",
-    platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13),
-        .tvOS(.v13),
-    ],
-    products: [
-        .library(
-            name: "AttributedText",
-            targets: ["AttributedText"]
-        ),
-    ],
-    dependencies: [
-        .package(
-            name: "SnapshotTesting",
-            url: "https://github.com/pointfreeco/swift-snapshot-testing",
-            from: "1.9.0"
-        ),
-    ],
-    targets: [
-        .target(
-            name: "AttributedText",
-            dependencies: []
-        ),
-        .testTarget(
-            name: "AttributedTextTests",
-            dependencies: ["AttributedText", "SnapshotTesting"],
-            exclude: ["__Snapshots__"]
-        ),
-    ]
+  name: "AttributedText",
+  platforms: [
+    .macOS(.v10_15),
+    .iOS(.v13),
+    .tvOS(.v13),
+  ],
+  products: [
+    .library(
+      name: "AttributedText",
+      targets: ["AttributedText"]
+    )
+  ],
+  dependencies: [
+    .package(
+      name: "SnapshotTesting",
+      url: "https://github.com/pointfreeco/swift-snapshot-testing",
+      from: "1.9.0"
+    )
+  ],
+  targets: [
+    .target(
+      name: "AttributedText",
+      dependencies: []
+    ),
+    .testTarget(
+      name: "AttributedTextTests",
+      dependencies: ["AttributedText", "SnapshotTesting"],
+      exclude: ["__Snapshots__"]
+    ),
+  ]
 )
