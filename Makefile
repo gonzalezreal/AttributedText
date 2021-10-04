@@ -20,6 +20,6 @@ test:
 			-destination '$(DESTINATION_WATCHOS)'
 
 format:
-	swiftformat .
+	swift format --in-place --recursive .
 
 .PHONY: format
