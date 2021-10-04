@@ -5,7 +5,6 @@
 
     import AttributedText
 
-    @available(iOS 13.0, tvOS 13.0, *)
     final class AttributedTextTests: XCTestCase {
         struct TestView: View {
             var body: some View {
