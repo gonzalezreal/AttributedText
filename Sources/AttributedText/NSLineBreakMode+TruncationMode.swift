@@ -2,7 +2,7 @@
     import SwiftUI
 
     extension NSLineBreakMode {
-        @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
+        @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
         init(truncationMode: Text.TruncationMode) {
             switch truncationMode {
             case .head:
