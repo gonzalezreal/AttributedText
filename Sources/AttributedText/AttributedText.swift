@@ -1,7 +1,6 @@
 #if !os(watchOS)
     import SwiftUI
 
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
     public struct AttributedText: View {
         @StateObject private var textSizeViewModel = TextSizeViewModel()
 
@@ -34,7 +33,6 @@
         }
     }
 
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
     private extension GeometryProxy {
         var maxWidth: CGFloat {
             size.width - safeAreaInsets.leading - safeAreaInsets.trailing
