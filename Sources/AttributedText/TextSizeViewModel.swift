@@ -1,11 +1,11 @@
 #if !os(watchOS)
-    import SwiftUI
+  import SwiftUI
 
-    final class TextSizeViewModel: ObservableObject {
-        @Published var textSize: CGSize?
+  final class TextSizeViewModel: ObservableObject {
+    @Published var textSize: CGSize?
 
-        func didUpdateTextView(_ textView: AttributedTextImpl.TextView) {
-            textSize = textView.intrinsicContentSize
-        }
+    func didUpdateTextView(_ textView: AttributedTextImpl.TextView) {
+      textSize = textView.intrinsicContentSize
     }
+  }
 #endif
