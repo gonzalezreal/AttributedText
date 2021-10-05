@@ -5,6 +5,6 @@
     var attributedText: NSAttributedString
     var maxLayoutWidth: CGFloat
     var textSizeViewModel: TextSizeViewModel
-    var openLink: ((URL) -> Void)?
+    var onOpenLink: ((URL) -> Void)?
   }
 #endif
