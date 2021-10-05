@@ -1,19 +1,30 @@
 #if !os(watchOS)
   import SwiftUI
 
+  /// A view that displays styled attributed text.
   public struct AttributedText: View {
     @StateObject private var textSizeViewModel = TextSizeViewModel()
 
     private let attributedText: NSAttributedString
-    private let openLink: ((URL) -> Void)?
+    private let onOpenLink: ((URL) -> Void)?
 
-    public init(_ attributedText: NSAttributedString, openLink: ((URL) -> Void)? = nil) {
+    /// Creates an attributed text view.
+    /// - Parameters:
+    ///   - attributedText: An attributed string to display.
+    ///   - onOpenLink: The action to perform when the user opens a link in the text. When not specified,
+    ///                 the  view opens the links using the `OpenURLAction` from the environment.
+    public init(_ attributedText: NSAttributedString, onOpenLink: ((URL) -> Void)? = nil) {
       self.attributedText = attributedText
-      self.openLink = openLink
+      self.onOpenLink = onOpenLink
     }
 
-    public init(openLink: ((URL) -> Void)? = nil, attributedText: () -> NSAttributedString) {
-      self.init(attributedText(), openLink: openLink)
+    /// Creates an attributed text view.
+    /// - Parameters:
+    ///   - attributedText: A closure that creates the attributed string to display.
+    ///   - onOpenLink: The action to perform when the user opens a link in the text. When not specified,
+    ///                 the  view opens the links using the `OpenURLAction` from the environment.
+    public init(attributedText: () -> NSAttributedString, onOpenLink: ((URL) -> Void)? = nil) {
+      self.init(attributedText(), onOpenLink: onOpenLink)
     }
 
     public var body: some View {
@@ -22,7 +33,7 @@
           attributedText: attributedText,
           maxLayoutWidth: geometry.maxWidth,
           textSizeViewModel: textSizeViewModel,
-          openLink: openLink
+          onOpenLink: onOpenLink
         )
       }
       .frame(

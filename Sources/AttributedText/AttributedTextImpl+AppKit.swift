@@ -27,9 +27,9 @@
       )
 
       if #available(macOS 11.0, *) {
-        context.coordinator.openLink = openLink ?? { context.environment.openURL($0) }
+        context.coordinator.openLink = onOpenLink ?? { context.environment.openURL($0) }
       } else {
-        context.coordinator.openLink = openLink
+        context.coordinator.openLink = onOpenLink
       }
 
       textSizeViewModel.didUpdateTextView(nsView)
