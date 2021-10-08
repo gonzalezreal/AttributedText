@@ -1,4 +1,4 @@
-#if canImport(UIKit) && !os(watchOS)
+#if canImport(UIKit)
   import SwiftUI
 
   extension AttributedTextImpl: UIViewRepresentable {
