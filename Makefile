@@ -1,19 +1,19 @@
-DESTINATION_MAC = platform=macOS
-DESTINATION_IOS = platform=iOS Simulator,name=iPhone 8
-DESTINATION_TVOS = platform=tvOS Simulator,name=Apple TV
-
-default: test
-
-test:
+test-macos:
 	xcodebuild \
 			-scheme AttributedText \
-			-destination '$(DESTINATION_MAC)'
+			-destination platform="macOS"
+
+test-ios:
 	xcodebuild test \
 			-scheme AttributedText \
-			-destination '$(DESTINATION_IOS)'
+			-destination platform="iOS Simulator,name=iPhone 8,OS=14.5"
+
+test-tvos:
 	xcodebuild test \
 			-scheme AttributedText \
-			-destination '$(DESTINATION_TVOS)'
+			-destination platform="tvOS Simulator,name=Apple TV,OS=14.5"
+
+test: test-macos test-ios test-tvos
 
 format:
 	swift format --in-place --recursive .
