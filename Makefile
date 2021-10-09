@@ -6,12 +6,12 @@ test-macos:
 test-ios:
 	xcodebuild test \
 			-scheme AttributedText \
-			-destination platform="iOS Simulator,name=iPhone 8,OS=14.5"
+			-destination platform="iOS Simulator,name=iPhone 8"
 
 test-tvos:
 	xcodebuild test \
 			-scheme AttributedText \
-			-destination platform="tvOS Simulator,name=Apple TV,OS=14.5"
+			-destination platform="tvOS Simulator,name=Apple TV"
 
 test: test-macos test-ios test-tvos
 
