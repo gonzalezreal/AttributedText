@@ -7,9 +7,9 @@ AttributedText is a Swift µpackage that provides `NSAttributedString` rendering
 
 ## Supported Platforms
 
-* macOS 10.15+
-* iOS 13.0+
-* tvOS 13.0+
+* macOS 11.0+
+* iOS 14.0+
+* tvOS 14.0+
 
 ## Usage
 ```swift
