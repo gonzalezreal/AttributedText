@@ -3,18 +3,7 @@
 
   extension AttributedTextImpl: UIViewRepresentable {
     func makeUIView(context: Context) -> TextView {
-      let uiView = TextView()
-
-      uiView.backgroundColor = .clear
-      uiView.textContainerInset = .zero
-      #if !os(tvOS)
-        uiView.isEditable = false
-      #endif
-      uiView.isScrollEnabled = false
-      uiView.textContainer.lineFragmentPadding = 0
-      uiView.delegate = context.coordinator
-
-      return uiView
+      TextView()
     }
 
     func updateUIView(_ uiView: TextView, context: Context) {
@@ -25,18 +14,8 @@
       uiView.textContainer.lineBreakMode = NSLineBreakMode(
         truncationMode: context.environment.truncationMode
       )
-
-      if #available(iOS 14.0, tvOS 14.0, *) {
-        context.coordinator.openLink = onOpenLink ?? { context.environment.openURL($0) }
-      } else {
-        context.coordinator.openLink = onOpenLink
-      }
-
+      uiView.openLink = onOpenLink ?? { context.environment.openURL($0) }
       textSizeViewModel.didUpdateTextView(uiView)
-    }
-
-    func makeCoordinator() -> Coordinator {
-      Coordinator()
     }
   }
 
@@ -49,6 +28,29 @@
         }
       }
 
+      var openLink: ((URL) -> Void)?
+
+      override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+
+        self.backgroundColor = .clear
+        self.textContainerInset = .zero
+        #if !os(tvOS)
+          self.isEditable = false
+        #endif
+        self.isSelectable = false
+        self.isScrollEnabled = false
+        self.textContainer.lineFragmentPadding = 0
+
+        self.addGestureRecognizer(
+          UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        )
+      }
+
+      required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+      }
+
       override var intrinsicContentSize: CGSize {
         guard maxLayoutWidth > 0 else {
           return super.intrinsicContentSize
@@ -56,37 +58,31 @@
 
         return sizeThatFits(CGSize(width: maxLayoutWidth, height: .greatestFiniteMagnitude))
       }
-    }
 
-    final class Coordinator: NSObject, UITextViewDelegate {
-      var openLink: ((URL) -> Void)?
-
-      func textView(
-        _: UITextView,
-        shouldInteractWith URL: URL,
-        in _: NSRange,
-        interaction: UITextItemInteraction
-      ) -> Bool {
-        guard case .invokeDefaultAction = interaction else {
-          return false
+      @objc func handleTap(sender: UITapGestureRecognizer) {
+        guard let url = self.url(at: sender.location(in: self)) else {
+          return
         }
-
-        if let openLink = self.openLink {
-          openLink(URL)
-          return false
-        } else {
-          return true
-        }
+        openLink?(url)
       }
 
-      func textView(
-        _: UITextView,
-        shouldInteractWith _: NSTextAttachment,
-        in _: NSRange,
-        interaction _: UITextItemInteraction
-      ) -> Bool {
-        // Disable text attachment interactions
-        false
+      private func url(at location: CGPoint) -> URL? {
+        guard let attributedText = self.attributedText else { return nil }
+
+        let index = indexOfCharacter(at: location)
+        return attributedText.attribute(.link, at: index, effectiveRange: nil) as? URL
+      }
+
+      private func indexOfCharacter(at location: CGPoint) -> Int {
+        let locationInTextContainer = CGPoint(
+          x: location.x - self.textContainerInset.left,
+          y: location.y - self.textContainerInset.top
+        )
+        return self.layoutManager.characterIndex(
+          for: locationInTextContainer,
+          in: self.textContainer,
+          fractionOfDistanceBetweenInsertionPoints: nil
+        )
       }
     }
   }
