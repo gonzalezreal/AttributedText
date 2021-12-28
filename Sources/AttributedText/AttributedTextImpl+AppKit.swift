@@ -26,12 +26,7 @@
         truncationMode: context.environment.truncationMode
       )
 
-      if #available(macOS 11.0, *) {
-        context.coordinator.openLink = onOpenLink ?? { context.environment.openURL($0) }
-      } else {
-        context.coordinator.openLink = onOpenLink
-      }
-
+      context.coordinator.openLink = onOpenLink ?? { context.environment.openURL($0) }
       textSizeViewModel.didUpdateTextView(nsView)
     }
 
