@@ -1,4 +1,4 @@
-#if canImport(UIKit)
+#if os(iOS)
   import SwiftUI
 
   extension AttributedTextImpl: UIViewRepresentable {
@@ -35,9 +35,7 @@
 
         self.backgroundColor = .clear
         self.textContainerInset = .zero
-        #if !os(tvOS)
-          self.isEditable = false
-        #endif
+        self.isEditable = false
         self.isSelectable = false
         self.isScrollEnabled = false
         self.textContainer.lineFragmentPadding = 0
