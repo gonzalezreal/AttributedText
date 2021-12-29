@@ -25,7 +25,6 @@
       nsView.textContainer?.lineBreakMode = NSLineBreakMode(
         truncationMode: context.environment.truncationMode
       )
-
       context.coordinator.openLink = onOpenLink ?? { context.environment.openURL($0) }
       textSizeViewModel.didUpdateTextView(nsView)
     }
