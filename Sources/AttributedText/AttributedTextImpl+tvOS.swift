@@ -18,6 +18,10 @@
       uiView.attributedText = attributedText
       uiView.maxLayoutWidth = maxLayoutWidth
 
+      if let linkTextAttributes = context.environment.linkTextAttributes {
+        uiView.linkTextAttributes = linkTextAttributes
+      }
+
       uiView.textContainer.maximumNumberOfLines = context.environment.lineLimit ?? 0
       uiView.textContainer.lineBreakMode = NSLineBreakMode(
         truncationMode: context.environment.truncationMode

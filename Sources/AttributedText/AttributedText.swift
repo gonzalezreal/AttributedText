@@ -48,3 +48,30 @@ extension GeometryProxy {
     size.width - safeAreaInsets.leading - safeAreaInsets.trailing
   }
 }
+
+extension View {
+  /// Set the attributes used to draw the onscreen presentation of link text.
+  /// - Parameter linkTextAttributes: The attributes used to draw the onscreen presentation of link text.
+  /// - Returns: A view with the linkTextAttributes set to the value you supply.
+  public func linkTextAttributes(_ linkTextAttributes: [NSAttributedString.Key: Any]) -> some View {
+    environment(\.linkTextAttributes, linkTextAttributes)
+  }
+
+  /// Set the attributes used to draw the onscreen presentation of link text.
+  /// - Parameter linkTextAttributes: A closure that creates the attributes used to draw the onscreen presentation of link text.
+  /// - Returns: A view with the linkTextAttributes set to the value you supply.
+  public func linkTextAttributes(_ linkTextAttributes: () -> [NSAttributedString.Key: Any]) -> some View {
+    environment(\.linkTextAttributes, linkTextAttributes())
+  }
+}
+
+extension EnvironmentValues {
+  internal var linkTextAttributes: [NSAttributedString.Key: Any]? {
+    get { self[LinkTextAttributesKey.self] }
+    set { self[LinkTextAttributesKey.self] = newValue }
+  }
+}
+
+private struct LinkTextAttributesKey: EnvironmentKey {
+  static let defaultValue: [NSAttributedString.Key: Any]? = nil
+}

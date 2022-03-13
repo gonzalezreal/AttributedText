@@ -21,6 +21,10 @@
       nsView.textStorage?.setAttributedString(attributedText)
       nsView.maxLayoutWidth = maxLayoutWidth
 
+      if let linkTextAttributes = context.environment.linkTextAttributes {
+        nsView.linkTextAttributes = linkTextAttributes
+      }
+
       nsView.textContainer?.maximumNumberOfLines = context.environment.lineLimit ?? 0
       nsView.textContainer?.lineBreakMode = NSLineBreakMode(
         truncationMode: context.environment.truncationMode
