@@ -2,7 +2,8 @@ import SwiftUI
 
 /// A view that displays styled attributed text.
 public struct AttributedText: View {
-  @StateObject private var textSizeViewModel = TextSizeViewModel()
+  private var textSizeViewModel = TextSizeViewModel()
+  @State private var textSize: CGSize?
 
   private let attributedText: NSAttributedString
   private let onOpenLink: ((URL) -> Void)?
@@ -36,10 +37,13 @@ public struct AttributedText: View {
       )
     }
     .frame(
-      idealWidth: textSizeViewModel.textSize?.width,
-      idealHeight: textSizeViewModel.textSize?.height
+      idealWidth: textSize?.width,
+      idealHeight: textSize?.height
     )
     .fixedSize(horizontal: false, vertical: true)
+    .onReceive(textSizeViewModel.$textSize) { size in
+        textSize = size
+    }
   }
 }
 
