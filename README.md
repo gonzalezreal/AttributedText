@@ -1,3 +1,9 @@
+> **Warning**
+>
+> **This repo has been archived.**
+>
+> From macOS 12+ / iOS 15+ / tvOS 15+ / watchOS 8+, you can use `AttributedString` with the SwiftUI `Text` view.
+
 # AttributedText
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalezreal%2FAttributedText%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/gonzalezreal/AttributedText)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalezreal%2FAttributedText%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/gonzalezreal/AttributedText)
